@@ -155,6 +155,9 @@ void ui_init() {
   lv_obj_align(action_menu, LV_ALIGN_CENTER, 0, 0);
   lv_obj_add_flag(action_menu, LV_OBJ_FLAG_HIDDEN); // Hide the menu initially
 
+  // Disable horizontal scroll
+  lv_obj_set_scroll_dir(action_menu, LV_DIR_VER); // Allow only vertical scrolling
+
   // Add buttons to the action menu
   const char * actions[] = {"Status", "Feed", "Play", "Shop", "Sleep", "Clean", "Heal", "Style", "Connect", "Settings", "Back"};
   for (int i = 0; i < 11; i++) {
