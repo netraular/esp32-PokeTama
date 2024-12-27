@@ -1,4 +1,4 @@
-#include "main_screen.h" // Incluir el archivo de cabecera
+#include "main_screen.h"
 #include "ui.h"
 #include "screens/action_menu.h"
 
@@ -42,6 +42,9 @@ static void main_screen_event_handler(lv_event_t * e) {
     } else if (strcmp(btn_text, "+") == 0) {
       Serial.println("Plus button clicked");
       show_action_menu(); // Show the action menu
+    } else if (strcmp(btn_text, "pet") == 0) {
+      Serial.println("Pet clicked");
+      // TODO: Handle pet action
     }
   }
 }
@@ -87,6 +90,21 @@ void main_screen_init() {
   lv_obj_t * label_plus = lv_label_create(btn_plus);
   lv_label_set_text(label_plus, "+");
   lv_obj_center(label_plus);
+
+  // Add transparent pet button in the center
+  lv_obj_t * btn_pet = lv_btn_create(main_screen);
+  lv_obj_set_size(btn_pet, 100, 100); // Adjust size as needed
+  lv_obj_align(btn_pet, LV_ALIGN_CENTER, 0, 0);
+  lv_obj_add_event_cb(btn_pet, main_screen_event_handler, LV_EVENT_CLICKED, NULL);
+
+  // Make the button transparent
+  lv_obj_set_style_bg_opa(btn_pet, LV_OPA_TRANSP, LV_PART_MAIN); // Transparent background
+  lv_obj_set_style_border_opa(btn_pet, LV_OPA_TRANSP, LV_PART_MAIN); // Transparent border
+
+  // Add a label to the button (optional, for debugging)
+  lv_obj_t * label_pet = lv_label_create(btn_pet);
+  lv_label_set_text(label_pet, "pet");
+  lv_obj_center(label_pet);
 }
 
 void change_room(Room new_room) {
