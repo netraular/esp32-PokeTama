@@ -4,24 +4,23 @@
 #include <lvgl.h>
 #include <Arduino.h>
 
-// Room enumeration
-enum Room {
-  ROOM_LIVINGROOM,
-  ROOM_KITCHEN,
-  ROOM_BATHROOM,
-  ROOM_GARDEN
-};
-
-// Declare FPS variables as extern
-extern uint32_t frame_count;
-extern uint32_t last_fps_time;
-extern uint32_t current_fps; // Variable to share the current FPS value
-
+// Function declarations
 void ui_init();
+void show_main_screen();
 void show_action_menu();
-void hide_action_menu();
-void change_room(Room new_room);
+void show_status_screen();
+void show_feed_screen();
+void show_play_screen();
+void show_shop_screen();
+void show_sleep_screen();
+void show_clean_screen();
+void show_heal_screen();
+void show_style_screen();
+void show_connect_screen();
+void show_settings_screen();
+
+// FPS functions
 void update_fps();
-uint32_t get_fps(); // Function to get the current FPS
+uint32_t get_fps();
 
 #endif
