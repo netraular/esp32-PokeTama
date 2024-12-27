@@ -1,4 +1,4 @@
-#include "action_menu.h"
+#include "screens/action_menu/action_menu.h"
 #include "ui.h"
 
 lv_obj_t * action_menu;

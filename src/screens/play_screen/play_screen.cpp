@@ -1,7 +1,7 @@
-#include "sleep_screen.h"
+#include "screens/play_screen/play_screen.h"
 #include "ui.h"
 
-lv_obj_t * sleep_screen;
+lv_obj_t * play_screen;
 
 static void back_button_event_handler(lv_event_t * e) {
   if (lv_event_get_code(e) == LV_EVENT_CLICKED) {
@@ -9,16 +9,16 @@ static void back_button_event_handler(lv_event_t * e) {
   }
 }
 
-void sleep_screen_init() {
-  sleep_screen = lv_obj_create(NULL);
+void play_screen_init() {
+  play_screen = lv_obj_create(NULL);
 
   // Add a label for the screen name
-  lv_obj_t * label = lv_label_create(sleep_screen);
-  lv_label_set_text(label, "sleep Screen");
+  lv_obj_t * label = lv_label_create(play_screen);
+  lv_label_set_text(label, "play Screen");
   lv_obj_align(label, LV_ALIGN_TOP_MID, 0, 10);
 
   // Add a back button
-  lv_obj_t * btn_back = lv_btn_create(sleep_screen);
+  lv_obj_t * btn_back = lv_btn_create(play_screen);
   lv_obj_set_size(btn_back, 100, 40);
   lv_obj_align(btn_back, LV_ALIGN_BOTTOM_MID, 0, -10);
   lv_obj_add_event_cb(btn_back, back_button_event_handler, LV_EVENT_CLICKED, NULL);

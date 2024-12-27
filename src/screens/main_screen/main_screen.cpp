@@ -1,6 +1,6 @@
 #include "main_screen.h"
 #include "ui.h"
-#include "screens/action_menu.h"
+#include "screens/main_screen/main_screen.h"
 
 // Include the image assets
 extern const lv_img_dsc_t livingroom;
