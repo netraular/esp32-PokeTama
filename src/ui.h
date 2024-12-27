@@ -2,9 +2,10 @@
 #define UI_H
 
 #include <lvgl.h>
-#include <Arduino.h> // Include Arduino.h for Serial
+#include <Arduino.h>
 
 void ui_init();
-void ui_update();
+void show_action_menu();
+void hide_action_menu();
 
 #endif
