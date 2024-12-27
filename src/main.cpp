@@ -43,21 +43,24 @@ void loop() {
   // Get the current time
   uint32_t current_time = millis();
 
+  // Update LVGL tick
+  lv_tick_inc(current_time - lv_last_tick);
+  lv_last_tick = current_time;
+
+  // Handle LVGL tasks
+  lv_timer_handler();
+
   // Check if it's time to update (30 FPS)
   if (current_time - last_frame_time >= FRAME_INTERVAL) {
     last_frame_time = current_time;
 
-    // Update LVGL tick
-    lv_tick_inc(current_time - lv_last_tick);
-    lv_last_tick = current_time;
-
-    // Handle LVGL tasks
-    lv_timer_handler();
-
     // Update pet state
     pet_update();
 
-    // Debugging: Print pet state periodically
+    // Update FPS counter
+    update_fps();
+
+    // Debugging: Print pet state and FPS periodically
     static uint32_t last_debug_time = 0;
     if (current_time - last_debug_time > 1000) { // Print every 1 second
       last_debug_time = current_time;
@@ -65,6 +68,11 @@ void loop() {
       Serial.print(hunger);
       Serial.print(", Happiness: ");
       Serial.println(happiness);
+
+      // Get and display FPS
+      uint32_t fps = get_fps();
+      Serial.print("FPS: ");
+      Serial.println(fps);
     }
   }
 }
