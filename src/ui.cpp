@@ -62,10 +62,6 @@ void update_fps() {
     char fps_text[16];
     snprintf(fps_text, sizeof(fps_text), "%lu", current_fps);
     lv_label_set_text(fps_label, fps_text);
-
-    // Print FPS to Serial Monitor (with "FPS: " prefix)
-    Serial.print("FPS: ");
-    Serial.println(current_fps);
   }
 }
 
