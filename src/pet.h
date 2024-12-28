@@ -1,10 +1,11 @@
 #ifndef PET_H
 #define PET_H
 
-#include <Arduino.h> // Include Arduino.h for Serial
+#include <Arduino.h>
 
-// Declare pet state variables
+// Declare pet state variables as extern
 extern int hunger;
+extern int health;
 extern int happiness;
 
 void pet_init();

@@ -11,6 +11,7 @@
 #include "screens/style_screen/style_screen.h"
 #include "screens/connect_screen/connect_screen.h"
 #include "screens/settings_screen/settings_screen.h"
+#include "pet.h" // Include pet.h to access hunger, health, and happiness
 
 // FPS variables
 uint32_t frame_count = 0; // Frame counter
@@ -21,63 +22,63 @@ uint32_t current_fps = 0; // Current FPS value
 lv_obj_t * fps_label;
 
 void ui_init() {
-  // Initialize all screens
-  main_screen_init();
-  action_menu_init();
-  status_screen_init();
-  feed_screen_init();
-  play_screen_init();
-  shop_screen_init();
-  sleep_screen_init();
-  clean_screen_init();
-  heal_screen_init();
-  style_screen_init();
-  connect_screen_init();
-  settings_screen_init();
+    // Initialize all screens
+    main_screen_init();
+    action_menu_init();
+    status_screen_init();
+    feed_screen_init();
+    play_screen_init();
+    shop_screen_init();
+    sleep_screen_init();
+    clean_screen_init();
+    heal_screen_init();
+    style_screen_init();
+    connect_screen_init();
+    settings_screen_init();
 
-  // Create the FPS label
-  fps_label = lv_label_create(lv_scr_act());
-  lv_label_set_text(fps_label, "0"); // Initialize with "0"
-  lv_obj_align(fps_label, LV_ALIGN_TOP_MID, 0, 0);
+    // Create the FPS label
+    fps_label = lv_label_create(lv_scr_act());
+    lv_label_set_text(fps_label, "0"); // Initialize with "0"
+    lv_obj_align(fps_label, LV_ALIGN_TOP_MID, 0, 0);
 
-  // Show the main screen by default
-  show_main_screen();
+    // Show the main screen by default
+    show_main_screen();
 }
 
 void update_fps() {
-  // Increment frame counter
-  frame_count++;
+    // Increment frame counter
+    frame_count++;
 
-  // Calculate FPS every second
-  uint32_t current_time = millis();
-  if (current_time - last_fps_time >= 1000) {
-    current_fps = frame_count; // Store the current FPS value
-    frame_count = 0;
-    last_fps_time = current_time;
+    // Calculate FPS every second
+    uint32_t current_time = millis();
+    if (current_time - last_fps_time >= 1000) {
+        current_fps = frame_count; // Store the current FPS value
+        frame_count = 0;
+        last_fps_time = current_time;
 
-    // Limit FPS to 30
-    if (current_fps > 30) current_fps = 30;
+        // Limit FPS to 30
+        if (current_fps > 30) current_fps = 30;
 
-    // Update FPS label (show only the number)
-    char fps_text[16];
-    snprintf(fps_text, sizeof(fps_text), "%lu", current_fps);
-    lv_label_set_text(fps_label, fps_text);
-  }
+        // Update FPS label (show only the number)
+        char fps_text[16];
+        snprintf(fps_text, sizeof(fps_text), "%lu", current_fps);
+        lv_label_set_text(fps_label, fps_text);
+    }
 }
 
 uint32_t get_fps() {
-  // Return the current FPS value
-  return current_fps;
+    // Return the current FPS value
+    return current_fps;
 }
 
 void show_main_screen() {
-  lv_scr_load(main_screen);
-  lv_obj_set_parent(fps_label, main_screen); // Move FPS label to main screen
+    lv_scr_load(main_screen);
+    lv_obj_set_parent(fps_label, main_screen); // Move FPS label to main screen
 }
 
 void show_action_menu() {
-  lv_scr_load(action_menu);
-  lv_obj_set_parent(fps_label, action_menu); // Move FPS label to action menu
+    lv_scr_load(action_menu);
+    lv_obj_set_parent(fps_label, action_menu); // Move FPS label to action menu
 }
 
 void show_status_screen() {

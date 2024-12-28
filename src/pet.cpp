@@ -2,7 +2,9 @@
 
 // Define pet state variables
 int hunger = 100;
+int health = 100;
 int happiness = 100;
+
 
 // Constants for state update intervals
 const uint32_t HUNGER_UPDATE_INTERVAL = 10000; // 10 seconds
