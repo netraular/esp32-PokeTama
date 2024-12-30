@@ -55,6 +55,7 @@ void pet_init() {
 
     Serial.println("Pet initialized with loaded stats.");
 }
+
 void pet_update() {
     if (paused) {
         return; // No actualizar los stats si está pausado
