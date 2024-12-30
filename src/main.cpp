@@ -20,6 +20,7 @@ PersistentDataManager* dataManager = nullptr;
 
 // Variable para almacenar si el archivo pet_stats.json existe
 bool petStatsExists = false;
+static uint32_t last_debug_time = 0;
 
 void setup() {
     Serial.begin(115200);
@@ -103,6 +104,7 @@ void setup() {
         // Show the main screen
         show_main_screen();
     }
+
 }
 
 void loop() {
@@ -115,17 +117,16 @@ void loop() {
     // Handle LVGL tasks
     lv_timer_handler();
 
-    // Check if it's time to update (30 FPS)
-    if (current_time - last_frame_time >= FRAME_INTERVAL) {
-        last_frame_time = current_time;
 
+    // Check if it's time to update (30 FPS)
+    if ((current_time - last_frame_time) >= FRAME_INTERVAL) {
+        last_frame_time = current_time;
         // Update pet state (si pet_stats.json existe)
         if (petStatsExists) {
             pet_update();
 
             // Debugging: Print pet state and FPS periodically
-            static uint32_t last_debug_time = 0;
-            if (current_time - last_debug_time > 1000) {
+            if ((current_time - last_debug_time) > 1000) {
                 last_debug_time = current_time;
                 Serial.print("Pet state - Hunger: ");
                 Serial.print(hunger);
@@ -139,6 +140,8 @@ void loop() {
         }
 
         // Update FPS counter
+
         update_fps();
+
     }
 }

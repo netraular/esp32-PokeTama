@@ -51,7 +51,7 @@ void update_fps() {
 
     // Calculate FPS every second
     uint32_t current_time = millis();
-    if (current_time - last_fps_time >= 1000) {
+    if ((current_time - last_fps_time) >= 1000) {
         current_fps = frame_count; // Store the current FPS value
         frame_count = 0;
         last_fps_time = current_time;
@@ -60,9 +60,9 @@ void update_fps() {
         if (current_fps > 30) current_fps = 30;
 
         // Update FPS label (show only the number)
-        char fps_text[16];
-        snprintf(fps_text, sizeof(fps_text), "%lu", current_fps);
-        lv_label_set_text(fps_label, fps_text);
+        // char fps_text[16];
+        // snprintf(fps_text, sizeof(fps_text), "%lu", current_fps);
+        // lv_label_set_text(fps_label, fps_text);
     }
 }
 

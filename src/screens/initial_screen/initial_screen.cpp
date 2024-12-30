@@ -1,6 +1,6 @@
 #include "screens/initial_screen/initial_screen.h"
 #include "ui.h"
-#include "globals.h" // Incluir globals.h para acceder a dataManager
+#include "globals.h" // Incluir globals.h para acceder a dataManager y petStatsExists
 
 lv_obj_t * initial_screen;
 
@@ -9,6 +9,10 @@ static void set_data_button_event_handler(lv_event_t * e) {
         // Crear archivos con valores predeterminados
         if (dataManager->initializeDefaultFiles()) {
             Serial.println("Default files created successfully.");
+
+            // Actualizar petStatsExists a true
+            petStatsExists = true;
+            Serial.println("petStatsExists set to true.");
         } else {
             Serial.println("Failed to create default files.");
         }

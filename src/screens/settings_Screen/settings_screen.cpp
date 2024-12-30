@@ -11,6 +11,7 @@ static void reset_button_event_handler(lv_event_t * e) {
     if (lv_event_get_code(e) == LV_EVENT_CLICKED) {
         // Pausar la actualización de los stats de la mascota
         paused = true;
+        Serial.println("Pet update paused.");
 
         // Borrar todos los archivos de datos
         if (dataManager->deleteAllFiles()) {
@@ -19,30 +20,9 @@ static void reset_button_event_handler(lv_event_t * e) {
             Serial.println("Failed to delete files.");
         }
 
-        // Crear archivos con valores iniciales
-        if (dataManager->resetToDefault()) {
-            Serial.println("Reset to default values successful.");
-        } else {
-            Serial.println("Failed to reset to default values.");
-        }
-
-        // Reiniciar la mascota con valores iniciales
-        PetStats stats;
-        if (dataManager->loadPetStats(stats)) {
-            hunger = stats.hunger;
-            health = stats.health;
-            happiness = stats.happiness;
-            coins = stats.coins;
-            birthdate = stats.birthdate;
-            evolution = stats.evolution;
-            alive = stats.alive;
-        }
-
-        // Reanudar la actualización de los stats
-        paused = false;
-
-        // Volver a la pantalla principal
-        show_main_screen();
+        // Reiniciar el dispositivo
+        Serial.println("Restarting device...");
+        ESP.restart();
     }
 }
 
