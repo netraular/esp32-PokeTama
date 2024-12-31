@@ -118,29 +118,26 @@ void loop() {
     lv_timer_handler();
 
 
-    // Check if it's time to update (30 FPS)
+    // Update game every 30fps -> Check if it's time to update (30 FPS)
     if ((current_time - last_frame_time) >= FRAME_INTERVAL) {
         last_frame_time = current_time;
-        // Update pet state (si pet_stats.json existe)
-        if (petStatsExists) {
-            pet_update();
 
-            // Debugging: Print pet state and FPS periodically
-            if ((current_time - last_debug_time) > 1000) {
-                last_debug_time = current_time;
-                Serial.print("Pet state - Hunger: ");
-                Serial.print(hunger);
-                Serial.print(", Happiness: ");
-                Serial.println(happiness);
 
-                uint32_t fps = get_fps();
-                Serial.print("FPS: ");
-                Serial.println(fps);
+        // Debugging: Print pet state every second
+        if ((current_time - last_debug_time) > 1000) {
+            last_debug_time = current_time;
+            if (petStatsExists) {// Update pet state (si pet_stats.json existe)
+                pet_update();
+                if(!paused){
+                    Serial.print("Pet state - Hunger: ");
+                    Serial.print(hunger);
+                    Serial.print(", Happiness: ");
+                    Serial.println(happiness);
+                }
             }
         }
 
-        // Update FPS counter
-
+        // Update and show FPS counter
         update_fps();
 
     }

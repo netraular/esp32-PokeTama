@@ -21,6 +21,5 @@ void show_settings_screen();
 
 // FPS functions
 void update_fps();
-uint32_t get_fps();
 
 #endif

@@ -5,5 +5,7 @@
 
 // Declarar la instancia de PersistentDataManager como un puntero
 extern PersistentDataManager* dataManager;
+// Declarar la variable para verificar si pet_stats.json existe
+extern bool petStatsExists;
 
 #endif
