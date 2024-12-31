@@ -1,16 +1,19 @@
 #ifndef FOOD_H
 #define FOOD_H
 
+#include <Arduino.h> // Incluir Arduino.h para usar String
+#include <lvgl.h>
+
 // Estructura para representar la comida
 typedef struct {
     int id;
-    const char* name;
+    String name; // Usar String
     int hunger;
     int health;
     int happiness;
     int quantity;
     int price;
-    const char* image;
+    String image; // Usar String
 } Food;
 
 #endif

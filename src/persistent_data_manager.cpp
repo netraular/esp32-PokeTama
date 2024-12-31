@@ -110,7 +110,7 @@ bool PersistentDataManager::loadFoodData(Food *foods, int &food_count) {
 
     File file = LittleFS.open(_foodDataPath, "r");
     if (!file) {
-        Serial.println("Failed to open food.json!");
+        Serial.println("Failed to open food.json! U.U");
         return false;
     }
 
@@ -127,13 +127,13 @@ bool PersistentDataManager::loadFoodData(Food *foods, int &food_count) {
     food_count = doc.size();
     for (int i = 0; i < food_count; i++) {
         foods[i].id = doc[i]["id"];
-        foods[i].name = doc[i]["name"];
+        foods[i].name = doc[i]["name"].as<String>();
         foods[i].hunger = doc[i]["hunger"];
         foods[i].health = doc[i]["health"];
         foods[i].happiness = doc[i]["happiness"];
         foods[i].quantity = doc[i]["quantity"];
         foods[i].price = doc[i]["price"];
-        foods[i].image = doc[i]["image"];
+        foods[i].image = doc[i]["image"].as<String>();
     }
 
     return true;
@@ -173,11 +173,8 @@ bool PersistentDataManager::saveFoodData(const Food *foods, int food_count) {
 bool PersistentDataManager::createDefaultFoodData() {
     const char* default_data = R"(
     [
-      {"id":1,"name":"Manzana","hunger":100,"health":5,"happiness":2,"quantity":3,"price":5,"image":"apple.c"},
-      {"id":2,"name":"Pescado","hunger":20,"health":10,"happiness":5,"quantity":2,"price":15,"image":"fish.c"},
-      {"id":3,"name":"Carne","hunger":30,"health":15,"happiness":10,"quantity":1,"price":25,"image":"meat.c"},
-      {"id":4,"name":"Ensalada","hunger":15,"health":20,"happiness":5,"quantity":4,"price":10,"image":"salad.c"},
-      {"id":5,"name":"Galleta","hunger":5,"health":-2,"happiness":15,"quantity":5,"price":3,"image":"cookie.c"}
+        {"id":1,"name":"Apple Pie","hunger":100,"health":5,"happiness":2,"quantity":5,"price":5,"image":"/assets/food/n05ApplePie.c"},
+        {"id":2,"name":"Bread","hunger":20,"health":10,"happiness":5,"quantity":5,"price":15,"image":"/assets/food/n07Bread.c"}
     ]
     )";
 
@@ -198,7 +195,7 @@ bool PersistentDataManager::initializeDefaultFiles() {
     if (!LittleFS.exists(_petStatsPath)) {
         success &= createDefaultPetStats();
     }
-
+    
     if (!LittleFS.exists(_foodDataPath)) {
         success &= createDefaultFoodData();
     }
@@ -209,13 +206,14 @@ bool PersistentDataManager::initializeDefaultFiles() {
 bool PersistentDataManager::deleteAllFiles() {
     bool success = true;
 
+    if (LittleFS.exists(_foodDataPath)) {
+        success &= LittleFS.remove(_foodDataPath);
+    }
+    
     if (LittleFS.exists(_petStatsPath)) {
         success &= LittleFS.remove(_petStatsPath);
     }
 
-    if (LittleFS.exists(_foodDataPath)) {
-        success &= LittleFS.remove(_foodDataPath);
-    }
 
     return success;
 }
