@@ -110,15 +110,16 @@ void loop() {
     uint32_t current_time = millis();
     uint32_t elapsed_time = current_time - initial_time; // Tiempo transcurrido desde el último fotograma
 
-    // Actualizar LVGL
-    lv_tick_inc(current_time - lv_last_tick);
-    lv_last_tick = current_time;
-    lv_timer_handler();
-
     // Actualizar cada fotograma (30 FPS)
     if (elapsed_time >= FRAME_INTERVAL) {
         initial_time = current_time; // Reiniciar el tiempo inicial para el próximo fotograma
-        update_fps(); // Actualizar FPS
+
+        // Actualizar LVGL
+        lv_tick_inc(current_time - lv_last_tick);
+        lv_last_tick = current_time;
+        lv_timer_handler();
+
+        update_fps(); // Contador de  FPS
     }
 
     // Actualizar la mascota cada 10 segundos
