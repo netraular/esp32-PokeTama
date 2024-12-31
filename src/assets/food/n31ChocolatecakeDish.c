@@ -89,11 +89,14 @@ const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_LARGE_CONST LV_ATTRIBUTE_IMAGE_N31CHOC
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x28, 0x49, 0x49, 0x49, 0x49, 0x49, 0x49, 0x49, 0x49, 0x28, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
 };
 
+
 const lv_image_dsc_t n31ChocolatecakeDish = {
-  .header.cf = LV_COLOR_FORMAT_RGB565A8,
-  .header.magic = LV_IMAGE_HEADER_MAGIC,
-  .header.w = 32,
-  .header.h = 32,
-  .data_size = 1024 * 3,
-  .data = n31ChocolatecakeDish_map,
+    .header = {
+        .magic = LV_IMAGE_HEADER_MAGIC, // Must come first
+        .cf = LV_COLOR_FORMAT_RGB565A8, // Must come second
+        .w = 32,                        // Width
+        .h = 32,                        // Height
+    },
+    .data_size = sizeof(n31ChocolatecakeDish_map),  // Size of the image data
+    .data = n31ChocolatecakeDish_map,               // Pointer to the image data
 };

@@ -1,6 +1,7 @@
 #include "screens/feed_screen/feed_screen.h"
 #include "ui.h"
 #include "pet.h" // Include pet.h to access hunger and happiness
+#include "feed_screen.h"
 #include <ArduinoJson.h>
 #include <LittleFS.h> // Include LittleFS library
 
@@ -158,7 +159,6 @@ void create_food_buttons() {
         // Add the food name and quantity as a label
         lv_obj_t * btn_label = lv_label_create(btn);
         lv_label_set_text_fmt(btn_label, "%s (%d)", foods[i].name.c_str(), foods[i].quantity);
-        
         lv_obj_center(btn_label); // Center the label inside the button
 
         y_offset += 50; // Increment Y position for the next button
