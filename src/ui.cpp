@@ -53,6 +53,8 @@ void update_fps() {
     }
 }
 
+//Se deberían mover estas funciones a cada archivo /screens/
+
 void show_main_screen() {
     lv_scr_load(main_screen);
 }
@@ -65,9 +67,6 @@ void show_status_screen() {
   lv_scr_load(status_screen);
 }
 
-void show_feed_screen() {
-  lv_scr_load(feed_screen);
-}
 
 void show_play_screen() {
   lv_scr_load(play_screen);

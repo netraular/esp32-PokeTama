@@ -17,9 +17,9 @@ static void back_button_event_handler(lv_event_t * e) {
 
 // Function to handle food button click
 void food_button_event_handler(lv_event_t * e) {
-    int food_id = (int)lv_event_get_user_data(e);
+    int food_id = (int)lv_event_get_user_data(e) - 1; // Ajustar el índice
     Serial.print("Selected food ID: ");
-    Serial.println(food_id);
+    Serial.println(food_id + 1); // Mostrar el ID correcto en el terminal
 
     // Update pet's state based on the selected food
     hunger += foods[food_id].hunger;
@@ -49,7 +49,7 @@ void food_button_event_handler(lv_event_t * e) {
     // Create a JSON document with the updated food data
     JsonDocument doc;
     for (int i = 0; i < food_count; i++) {
-        JsonObject food = doc.add<JsonObject>(); // Usar add<JsonObject>() en lugar de createNestedObject()
+        JsonObject food = doc.add<JsonObject>();
         food["id"] = foods[i].id;
         food["name"] = foods[i].name;
         food["hunger"] = foods[i].hunger;
@@ -99,26 +99,32 @@ void load_food_data() {
         foods[i].quantity = doc[i]["quantity"];
         foods[i].price = doc[i]["price"];
         foods[i].image = doc[i]["image"];
+
+        // Debug: Print loaded food data
+        Serial.print("Loaded food: ");
+        Serial.print(foods[i].id);
+        Serial.print(", ");
+        Serial.print(foods[i].name);
+        Serial.print(", Quantity: ");
+        Serial.println(foods[i].quantity);
     }
 }
 
-void feed_screen_init() {
-    feed_screen = lv_obj_create(NULL);
+void create_food_buttons() {
+    // Clear existing buttons
+    lv_obj_clean(feed_screen);
 
     // Add a label for the screen name
     lv_obj_t * label = lv_label_create(feed_screen);
     lv_label_set_text(label, "Feed Screen");
     lv_obj_align(label, LV_ALIGN_TOP_MID, 0, 10);
 
-    // Load food data
-    load_food_data();
-
     // Create buttons for each food item
     for (int i = 0; i < food_count; i++) {
         lv_obj_t * btn = lv_btn_create(feed_screen);
         lv_obj_set_size(btn, 100, 40);
         lv_obj_align(btn, LV_ALIGN_TOP_LEFT, 10, 50 + (i * 50));
-        lv_obj_add_event_cb(btn, food_button_event_handler, LV_EVENT_CLICKED, (void*)i);
+        lv_obj_add_event_cb(btn, food_button_event_handler, LV_EVENT_CLICKED, (void*)(i + 1)); // Pasar el ID correcto
 
         lv_obj_t * btn_label = lv_label_create(btn);
         lv_label_set_text_fmt(btn_label, "%s (%d)", foods[i].name, foods[i].quantity);
@@ -127,8 +133,6 @@ void feed_screen_init() {
         // Hide or disable the button if the quantity is zero
         if (foods[i].quantity <= 0) {
             lv_obj_add_flag(btn, LV_OBJ_FLAG_HIDDEN); // Hide the button
-            // Alternatively, you can disable the button:
-            // lv_obj_add_state(btn, LV_STATE_DISABLED);
         }
     }
 
@@ -140,4 +144,16 @@ void feed_screen_init() {
     lv_obj_t * label_back = lv_label_create(btn_back);
     lv_label_set_text(label_back, "Back");
     lv_obj_center(label_back);
+}
+
+void feed_screen_init() {
+    feed_screen = lv_obj_create(NULL);
+    load_food_data();
+    create_food_buttons();
+}
+
+void show_feed_screen() {
+    load_food_data();
+    create_food_buttons();
+    lv_scr_load(feed_screen);
 }

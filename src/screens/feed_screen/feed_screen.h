@@ -13,5 +13,6 @@ extern int food_count; // Número de alimentos disponibles
 
 void feed_screen_init();
 void load_food_data(); // Función para cargar los datos de comida desde JSON
+void show_feed_screen(); // Declaración de la función
 
 #endif
