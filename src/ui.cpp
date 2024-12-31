@@ -13,11 +13,6 @@
 #include "screens/settings_screen/settings_screen.h"
 #include "pet.h" // Include pet.h to access hunger, health, and happiness
 
-// FPS variables
-uint32_t frame_count = 0; // Frame counter
-uint32_t last_fps_time = 0; // Last time FPS was calculated
-uint32_t current_fps = 0; // Current FPS value
-
 void ui_init() {
     // Initialize all screens
     main_screen_init();
@@ -37,21 +32,24 @@ void ui_init() {
     show_main_screen();
 }
 
+
 void update_fps() {
-    // Increment frame counter
+    static uint32_t frame_count = 0; // Contador de fotogramas
+    static uint32_t last_fps_time = millis(); // Tiempo de la última actualización de FPS
+    uint32_t current_time = millis();
+
+    // Incrementar el contador de fotogramas
     frame_count++;
 
-    // Calculate FPS every second
-    uint32_t current_time = millis();
+    // Calcular FPS cada segundo
     if ((current_time - last_fps_time) >= 1000) {
-        current_fps = frame_count; // Store the current FPS value
-        frame_count = 0;
-        last_fps_time = current_time;
+        uint32_t current_fps = frame_count; // Almacenar el valor actual de FPS
+        frame_count = 0; // Reiniciar el contador de fotogramas
+        last_fps_time = current_time; // Reiniciar el tiempo de la última actualización
 
-        //Show fps by serial
-        uint32_t fps = current_fps;
+        // Mostrar FPS por serial
         Serial.print("FPS: ");
-        Serial.println(fps);
+        Serial.println(current_fps);
     }
 }
 

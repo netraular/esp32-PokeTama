@@ -21,6 +21,8 @@ const uint32_t HAPPINESS_UPDATE_INTERVAL = 10000; // 10 seconds
 uint32_t last_hunger_update = 0;
 uint32_t last_happiness_update = 0;
 
+static uint32_t last_pet_update_time = 0; // Última vez que se actualizó el estado de la mascota
+
 void pet_init() {
     // Load pet stats from persistent storage
     PetStats stats;
@@ -57,42 +59,24 @@ void pet_init() {
 }
 
 void pet_update() {
-    if (paused) {
-        return; // No actualizar los stats si está pausado
-    }
-
-    // Get the current time
     uint32_t current_time = millis();
 
-    // Update hunger every 10 seconds
-    if (current_time - last_hunger_update >= HUNGER_UPDATE_INTERVAL) {
-        last_hunger_update = current_time;
-        if (hunger > 0) hunger--;
-        Serial.print("Hunger updated: ");
-        Serial.println(hunger);
+    // Actualizar cada 10 segundos
+    if ((current_time - last_pet_update_time) >= 10000) {
+        last_pet_update_time = current_time;
 
-        // Save updated stats to persistent storage
-        PetStats stats = {name, health, hunger, happiness, coins, birthdate, evolution, alive};
-        dataManager->savePetStats(stats);
-    }
+        if (petStatsExists && !paused) {
+            if (hunger > 0) hunger--;
+            if (happiness > 0) happiness--;
 
-    // Update happiness every 10 seconds
-    if (current_time - last_happiness_update >= HAPPINESS_UPDATE_INTERVAL) {
-        last_happiness_update = current_time;
-        if (happiness > 0) happiness--;
-        Serial.print("Happiness updated: ");
-        Serial.println(happiness);
+            // Guardar estadísticas actualizadas
+            PetStats stats = {name, health, hunger, happiness, coins, birthdate, evolution, alive};
+            dataManager->savePetStats(stats);
 
-        // Save updated stats to persistent storage
-        PetStats stats = {name, health, hunger, happiness, coins, birthdate, evolution, alive};
-        dataManager->savePetStats(stats);
-    }
-
-    // Debugging: Notify if hunger or happiness is critically low
-    if (hunger <= 20) {
-        Serial.println("Warning: Pet is very hungry!");
-    }
-    if (happiness <= 20) {
-        Serial.println("Warning: Pet is very unhappy!");
+            Serial.print("Pet state - Hunger: ");
+            Serial.print(hunger);
+            Serial.print(", Happiness: ");
+            Serial.println(happiness);
+        }
     }
 }

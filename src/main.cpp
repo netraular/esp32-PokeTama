@@ -13,14 +13,12 @@ uint32_t lv_last_tick = 0;
 
 // Constants for frame rate control
 const uint32_t FRAME_INTERVAL = 1000 / 30;
-uint32_t last_frame_time = 0;
 
 // Persistent data manager (como puntero)
 PersistentDataManager* dataManager = nullptr;
 
 // Variable para almacenar si el archivo pet_stats.json existe
 bool petStatsExists = false;
-static uint32_t last_debug_time = 0;
 
 void setup() {
     Serial.begin(115200);
@@ -104,41 +102,28 @@ void setup() {
         // Show the main screen
         show_main_screen();
     }
-
 }
 
 void loop() {
+    static uint32_t initial_time = millis(); // Tiempo inicial de referencia para fotogramas
+    static uint32_t last_pet_update_time = millis(); // Tiempo de la última actualización de la mascota
     uint32_t current_time = millis();
+    uint32_t elapsed_time = current_time - initial_time; // Tiempo transcurrido desde el último fotograma
 
-    // Update LVGL tick
+    // Actualizar LVGL
     lv_tick_inc(current_time - lv_last_tick);
     lv_last_tick = current_time;
-
-    // Handle LVGL tasks
     lv_timer_handler();
 
+    // Actualizar cada fotograma (30 FPS)
+    if (elapsed_time >= FRAME_INTERVAL) {
+        initial_time = current_time; // Reiniciar el tiempo inicial para el próximo fotograma
+        update_fps(); // Actualizar FPS
+    }
 
-    // Update game every 30fps -> Check if it's time to update (30 FPS)
-    if ((current_time - last_frame_time) >= FRAME_INTERVAL) {
-        last_frame_time = current_time;
-
-
-        // Debugging: Print pet state every second
-        if ((current_time - last_debug_time) > 1000) {
-            last_debug_time = current_time;
-            if (petStatsExists) {// Update pet state (si pet_stats.json existe)
-                pet_update();
-                if(!paused){
-                    Serial.print("Pet state - Hunger: ");
-                    Serial.print(hunger);
-                    Serial.print(", Happiness: ");
-                    Serial.println(happiness);
-                }
-            }
-        }
-
-        // Update and show FPS counter
-        update_fps();
-
+    // Actualizar la mascota cada 10 segundos
+    if ((current_time - last_pet_update_time) >= 10000) {
+        last_pet_update_time = current_time; // Reiniciar el tiempo de la última actualización
+        pet_update(); // Actualizar estado de la mascota
     }
 }

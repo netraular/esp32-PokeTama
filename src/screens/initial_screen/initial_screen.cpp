@@ -29,7 +29,7 @@ void initial_screen_init() {
     // Add a label for the screen name
     lv_obj_t * label = lv_label_create(initial_screen);
     lv_label_set_text(label, "Welcome to Tamagotchi!");
-    lv_obj_align(label, LV_ALIGN_TOP_MID, 0, 10);
+    lv_obj_align(label, LV_ALIGN_CENTER, 0, -30);
 
     // Add a "Set Data" button
     lv_obj_t * btn_set_data = lv_btn_create(initial_screen);
